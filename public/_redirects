@@ -1,0 +1,13 @@
+# ==========================================
+# Netlify Redirects Configuration
+# For LeadConnect Pro SPA
+# ==========================================
+
+# All routes go to index.html for React Router
+/*    /index.html    200
+
+# Optional: Redirect root to dashboard
+/     /dashboard     302
+
+# Optional: Handle 404
+/404    /index.html    404
