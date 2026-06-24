@@ -1,7 +1,10 @@
-// frontend/src/App.jsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+// ✅ Yeh import sahi hai - Named export se
 import { LeadsProvider } from './context/LeadsContext.jsx';
+// OR
+// import LeadsProvider from './context/LeadsContext.jsx'; // Agar default export use karna hai toh
+
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard.jsx';
 import LeadFinder from './pages/LeadFinder.jsx';
@@ -23,19 +26,7 @@ function App() {
             <Route path="/leads" element={<LeadManager />} />
           </Routes>
         </Layout>
-        <Toaster 
-          position="top-right" 
-          toastOptions={{ 
-            duration: 3000,
-            style: {
-              background: '#fff',
-              border: '1px solid #f0f0f0',
-              borderRadius: '12px',
-              padding: '12px 16px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
-            }
-          }} 
-        />
+        <Toaster />
       </BrowserRouter>
     </LeadsProvider>
   );
