@@ -1,72 +1,35 @@
-// src/pages/LeadFinder.jsx - Save Functions Only
-// Add these functions in your LeadFinder component
+// Add these functions in LeadFinder.jsx
 
-// ✅ SAVE ALL
-const handleSaveAll = async () => {
+// ✅ COPY URL
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text);
+  toast.success('📋 Copied!');
+};
+
+// ✅ EXPORT EXCEL (Add in LeadFinder)
+const exportExcel = () => {
   if (!filteredResults.length) {
-    toast.error('No leads to save');
+    toast.error('No data');
     return;
   }
 
-  setSaving(true);
-  const toastId = toast.loading(`Saving ${filteredResults.length} leads...`);
+  const data = filteredResults.map(l => ({
+    Name: l.name || '',
+    Phone: l.phone || '',
+    Website: l.website || '',
+    Address: l.address || '',
+    Rating: l.rating || 0,
+    Reviews: l.reviews || 0
+  }));
 
-  try {
-    const leadsToSave = filteredResults.map(lead => ({
-      name: lead.name || 'Unknown',
-      email: lead.email || '',
-      phone: lead.phone || '',
-      address: lead.address || '',
-      website: lead.website || '',
-      rating: lead.rating || 0,
-      reviews: lead.reviews || 0,
-      source: 'google_maps'
-    }));
-
-    await addLeads(leadsToSave);
-    
-    setResults([]);
-    setSelected([]);
-    toast.success(`✅ ${leadsToSave.length} leads saved!`, { id: toastId });
-  } catch (err) {
-    toast.error('Failed to save', { id: toastId });
-  } finally {
-    setSaving(false);
-  }
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Leads');
+  XLSX.writeFile(wb, `leads_${Date.now()}.xlsx`);
+  toast.success('📊 Excel exported');
 };
 
-// ✅ SAVE SELECTED
-const handleSaveSelected = async () => {
-  if (!selected.length) {
-    toast.error('No leads selected');
-    return;
-  }
-
-  const leadsToSave = results.filter((_, idx) => selected.includes(idx));
-  
-  setSaving(true);
-  const toastId = toast.loading(`Saving ${leadsToSave.length} leads...`);
-
-  try {
-    const formatted = leadsToSave.map(lead => ({
-      name: lead.name || 'Unknown',
-      email: lead.email || '',
-      phone: lead.phone || '',
-      address: lead.address || '',
-      website: lead.website || '',
-      rating: lead.rating || 0,
-      reviews: lead.reviews || 0,
-      source: 'google_maps'
-    }));
-
-    await addLeads(formatted);
-    
-    setResults(results.filter((_, idx) => !selected.includes(idx)));
-    setSelected([]);
-    toast.success(`✅ ${formatted.length} leads saved!`, { id: toastId });
-  } catch (err) {
-    toast.error('Failed to save', { id: toastId });
-  } finally {
-    setSaving(false);
-  }
-};
+// Add Copy button in table actions:
+<button onClick={() => copyToClipboard(lead.website || lead.phone || lead.email)} className="text-gray-400 hover:text-primary-500" title="Copy">
+  <FaCopy size={14} />
+</button>
