@@ -1,0 +1,100 @@
+/* frontend/src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bg text-dark font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-primary-500 to-secondary-500 rounded-full;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-card hover:shadow-card-hover transition-all duration-300;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500;
+  }
+
+  .gradient-border {
+    @apply border-2 border-transparent bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-border;
+  }
+
+  .btn-primary {
+    @apply px-6 py-2.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-medium hover:shadow-glow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply px-6 py-2.5 border-2 border-primary-500 text-primary-500 rounded-xl font-medium hover:bg-primary-500 hover:text-white transition-all duration-300;
+  }
+
+  .btn-success {
+    @apply px-6 py-2.5 bg-success/10 text-success border border-success/20 rounded-xl font-medium hover:bg-success hover:text-white transition-all duration-300;
+  }
+
+  .btn-danger {
+    @apply px-6 py-2.5 bg-danger/10 text-danger border border-danger/20 rounded-xl font-medium hover:bg-danger hover:text-white transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 outline-none;
+  }
+
+  .select-field {
+    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 outline-none appearance-none;
+  }
+
+  .stat-card {
+    @apply glass-card p-6 rounded-2xl hover:scale-[1.02] transition-all duration-300 cursor-default;
+  }
+
+  .table-container {
+    @apply bg-white rounded-2xl shadow-card overflow-hidden border border-gray-100/50;
+  }
+
+  .table-header {
+    @apply px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50/50;
+  }
+
+  .table-cell {
+    @apply px-6 py-4 text-sm text-gray-700 border-b border-gray-100/50;
+  }
+
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-500/10 text-primary-600;
+  }
+
+  .badge-success {
+    @apply badge bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning/10 text-warning;
+  }
+
+  .badge-danger {
+    @apply badge bg-danger/10 text-danger;
+  }
+}
