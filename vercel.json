@@ -1,8 +1,8 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": "dist",
-  "installCommand": "npm install",
+  "buildCommand": "cd 4-Pagefront && npm install && npm run build",
+  "outputDirectory": "4-Pagefront/dist",
   "framework": "vite",
+  "installCommand": "cd 4-Pagefront && npm install",
   "rewrites": [
     {
       "source": "/(.*)",
