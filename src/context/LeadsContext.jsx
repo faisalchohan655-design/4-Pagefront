@@ -8,6 +8,12 @@ const LeadsContext = createContext();
 export const LeadsProvider = ({ children }) => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState({
+    total: 0,
+    withEmail: 0,
+    withPhone: 0,
+    withWebsite: 0
+  });
 
   const API_URL = import.meta.env.VITE_API_URL || 'https://4-pageback-production.up.railway.app/api';
 
@@ -15,7 +21,14 @@ export const LeadsProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await axios.get(`${API_URL}/leads`);
-      setLeads(res.data || []);
+      const data = res.data || [];
+      setLeads(data);
+      setStats({
+        total: data.length,
+        withEmail: data.filter(l => l.email).length,
+        withPhone: data.filter(l => l.phone).length,
+        withWebsite: data.filter(l => l.website).length
+      });
     } catch (err) {
       console.error('Fetch error:', err);
     } finally {
@@ -55,7 +68,15 @@ export const LeadsProvider = ({ children }) => {
   }, []);
 
   return (
-    <LeadsContext.Provider value={{ leads, loading, addLeads, deleteBulk, fetchLeads, setLeads }}>
+    <LeadsContext.Provider value={{ 
+      leads, 
+      loading, 
+      stats,
+      addLeads, 
+      deleteBulk, 
+      fetchLeads, 
+      setLeads 
+    }}>
       {children}
     </LeadsContext.Provider>
   );
