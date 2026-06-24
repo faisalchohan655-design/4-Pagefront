@@ -11,7 +11,6 @@ export const LeadsProvider = ({ children }) => {
 
   const API_URL = import.meta.env.VITE_API_URL || 'https://4-pageback-production.up.railway.app/api';
 
-  // FETCH LEADS
   const fetchLeads = async () => {
     setLoading(true);
     try {
@@ -24,7 +23,6 @@ export const LeadsProvider = ({ children }) => {
     }
   };
 
-  // ADD LEADS
   const addLeads = async (newLeads) => {
     try {
       const toSave = Array.isArray(newLeads) ? newLeads : [newLeads];
@@ -41,12 +39,23 @@ export const LeadsProvider = ({ children }) => {
     }
   };
 
+  const deleteBulk = async (ids) => {
+    try {
+      if (!ids || !ids.length) return;
+      await axios.delete(`${API_URL}/leads/bulk`, { data: { ids } });
+      await fetchLeads();
+      toast.success(`${ids.length} leads deleted`);
+    } catch (err) {
+      toast.error('Failed to delete');
+    }
+  };
+
   useEffect(() => {
     fetchLeads();
   }, []);
 
   return (
-    <LeadsContext.Provider value={{ leads, loading, addLeads, fetchLeads, setLeads }}>
+    <LeadsContext.Provider value={{ leads, loading, addLeads, deleteBulk, fetchLeads, setLeads }}>
       {children}
     </LeadsContext.Provider>
   );
