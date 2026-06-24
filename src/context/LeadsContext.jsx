@@ -1,6 +1,6 @@
-// frontend/src/context/LeadsContext.jsx
+// src/context/LeadsContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const LeadsContext = createContext();
@@ -15,10 +15,13 @@ export const LeadsProvider = ({ children }) => {
     withWebsite: 0
   });
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+  // ✅ FETCH LEADS
   const fetchLeads = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/leads');
+      const res = await axios.get(`${API_URL}/leads`);
       const data = res.data || [];
       setLeads(data);
       updateStats(data);
@@ -30,6 +33,7 @@ export const LeadsProvider = ({ children }) => {
     }
   };
 
+  // ✅ UPDATE STATS
   const updateStats = (data) => {
     setStats({
       total: data.length,
@@ -39,6 +43,7 @@ export const LeadsProvider = ({ children }) => {
     });
   };
 
+  // ✅ ADD LEADS (BULK SAVE)
   const addLeads = async (newLeads) => {
     try {
       const toSave = Array.isArray(newLeads) ? newLeads : [newLeads];
@@ -47,7 +52,7 @@ export const LeadsProvider = ({ children }) => {
         return;
       }
 
-      const res = await api.post('/leads/bulk', { leads: toSave });
+      const res = await axios.post(`${API_URL}/leads/bulk`, { leads: toSave });
       await fetchLeads();
       toast.success(`✅ ${res.data.saved || toSave.length} leads saved!`);
       return res.data;
@@ -58,9 +63,10 @@ export const LeadsProvider = ({ children }) => {
     }
   };
 
+  // ✅ DELETE SINGLE LEAD
   const deleteLead = async (id) => {
     try {
-      await api.delete(`/leads/${id}`);
+      await axios.delete(`${API_URL}/leads/${id}`);
       await fetchLeads();
       toast.success('Lead deleted');
     } catch (err) {
@@ -68,10 +74,11 @@ export const LeadsProvider = ({ children }) => {
     }
   };
 
+  // ✅ DELETE BULK LEADS
   const deleteBulk = async (ids) => {
     try {
       if (!ids || !ids.length) return;
-      await api.delete('/leads/bulk', { data: { ids } });
+      await axios.delete(`${API_URL}/leads/bulk`, { data: { ids } });
       await fetchLeads();
       toast.success(`${ids.length} leads deleted`);
     } catch (err) {
@@ -79,6 +86,7 @@ export const LeadsProvider = ({ children }) => {
     }
   };
 
+  // ✅ LOAD LEADS ON MOUNT
   useEffect(() => {
     fetchLeads();
   }, []);
