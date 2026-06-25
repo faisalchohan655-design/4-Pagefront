@@ -1,33 +1,28 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { LeadsProvider } from './context/LeadsContext.jsx';
-
-// ✅ Sirf Layout aur Pages import karo
-import Dashboard from './pages/Dashboard.jsx';
-import LeadFinder from './pages/LeadFinder.jsx';
+import { LeadsProvider } from './context/LeadsContext';
+import Dashboard from './pages/Dashboard';
+import LeadFinder from './pages/LeadFinder';
+import CampaignOutreach from './pages/CampaignOutreach';
+import LeadManager from './pages/LeadManager';
+import Navigation from './components/Navigation';
 
 function App() {
   return (
-    <LeadsProvider>
-      <BrowserRouter>
-        <div>
-          {/* Simple Navbar */}
-          <nav style={{ background: '#7c3aed', padding: '15px', color: 'white' }}>
-            <h1 style={{ fontSize: '24px' }}>🚀 LeadConnect Pro</h1>
-          </nav>
-          
-          {/* Content */}
-          <div style={{ padding: '20px' }}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/finder" element={<LeadFinder />} />
-            </Routes>
-          </div>
+    <BrowserRouter>
+      <LeadsProvider>
+        <div className="min-h-screen">
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/lead-finder" element={<LeadFinder />} />
+            <Route path="/campaign-outreach" element={<CampaignOutreach />} />
+            <Route path="/lead-manager" element={<LeadManager />} />
+          </Routes>
         </div>
-        <Toaster />
-      </BrowserRouter>
-    </LeadsProvider>
+      </LeadsProvider>
+    </BrowserRouter>
   );
 }
 
