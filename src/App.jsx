@@ -1,64 +1,31 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { LeadsProvider } from './context/LeadsContext.jsx';
-import Layout from './components/layout/Layout';
 
-// Import all pages (JO FILES EXIST KARTI HAIN)
+// ✅ Sirf Layout aur Pages import karo
 import Dashboard from './pages/Dashboard.jsx';
 import LeadFinder from './pages/LeadFinder.jsx';
-import EmailExtractor from './pages/EmailExtractor.jsx';
-import CampaignHub from './pages/CampaignHub.jsx';
-import LeadManager from './pages/LeadManager.jsx';
-
-// ❌ REMOVE THESE - Files don't exist
-// import SocialInsights from './pages/SocialInsights.jsx';
-// import DomainInsights from './pages/DomainInsights.jsx';
-// import WebsiteIntelligence from './pages/WebsiteIntelligence.jsx';
 
 function App() {
   return (
     <LeadsProvider>
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            {/* Default Route */}
-            <Route path="/" element={<Navigate to="/dashboard" />} />
-            
-            {/* Main Pages */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/finder" element={<LeadFinder />} />
-            <Route path="/extractor" element={<EmailExtractor />} />
-            <Route path="/campaign" element={<CampaignHub />} />
-            <Route path="/leads" element={<LeadManager />} />
-            
-            {/* 404 - Catch all */}
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </Routes>
-        </Layout>
-        <Toaster 
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-            },
-            success: {
-              duration: 3000,
-              iconTheme: {
-                primary: '#7c3aed',
-                secondary: '#fff',
-              },
-            },
-            error: {
-              duration: 4000,
-              iconTheme: {
-                primary: '#ef4444',
-                secondary: '#fff',
-              },
-            },
-          }}
-        />
+        <div>
+          {/* Simple Navbar */}
+          <nav style={{ background: '#7c3aed', padding: '15px', color: 'white' }}>
+            <h1 style={{ fontSize: '24px' }}>🚀 LeadConnect Pro</h1>
+          </nav>
+          
+          {/* Content */}
+          <div style={{ padding: '20px' }}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/finder" element={<LeadFinder />} />
+            </Routes>
+          </div>
+        </div>
+        <Toaster />
       </BrowserRouter>
     </LeadsProvider>
   );
