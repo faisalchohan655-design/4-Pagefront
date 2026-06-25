@@ -1,6 +1,4 @@
 {
-  "name": "leadai-frontend",
-  "version": 2,
   "builds": [
     {
       "src": "package.json",
@@ -14,24 +12,6 @@
     {
       "src": "/(.*)",
       "dest": "/index.html"
-    }
-  ],
-  "env": {
-    "REACT_APP_API_URL": "https://4-pageback-production.up.railway.app",
-    "REACT_APP_ENVIRONMENT": "production",
-    "REACT_APP_ENABLE_AI_SCORING": "true",
-    "REACT_APP_ENABLE_EMAIL_EXTRACTOR": "true",
-    "REACT_APP_ENABLE_WHATSAPP": "true",
-    "REACT_APP_ENABLE_BULK_OPERATIONS": "true"
-  },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
-      ]
     }
   ]
 }
