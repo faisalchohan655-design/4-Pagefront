@@ -1,28 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  Search,
-  Send,
-  Users,
-  Mail,
-  Brain,
-  Sparkles,
-  Settings,
-  HelpCircle,
-  ChevronLeft,
-  Menu,
-  X,
-  Zap,
-  ChevronDown
-} from 'lucide-react';
+import { LayoutDashboard, Search, Send, Users, Mail, Brain, Settings, HelpCircle, ChevronLeft, Menu, X, Zap, ChevronDown } from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const mainNavItems = [
+  const items = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/lead-finder', icon: Search, label: 'Lead Finder' },
     { path: '/campaign-outreach', icon: Send, label: 'Campaigns' },
@@ -30,162 +15,50 @@ const Sidebar = () => {
     { path: '/email-extractor', icon: Mail, label: 'Email Extractor' },
   ];
 
-  const bottomNavItems = [
-    { path: '/settings', icon: Settings, label: 'Settings' },
-    { path: '/help', icon: HelpCircle, label: 'Help & Support' },
-  ];
-
-  const isActive = (path) => location.pathname === path;
-
-  const toggleSidebar = () => setCollapsed(!collapsed);
-  const toggleMobile = () => setMobileOpen(!mobileOpen);
-
-  const renderNavItem = (item, index) => {
-    const active = isActive(item.path);
-    return (
-      <Link
-        key={index}
-        to={item.path}
-        onClick={() => setMobileOpen(false)}
-        className={`
-          flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-          ${active 
-            ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25' 
-            : 'text-gray-400 hover:text-white hover:bg-slate-800'
-          }
-          ${collapsed ? 'justify-center' : 'justify-start'}
-          relative group
-        `}
-      >
-        <item.icon size={20} className="flex-shrink-0" />
-        {!collapsed && <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>}
-        {collapsed && (
-          <div className="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-            {item.label}
-          </div>
-        )}
-        {active && !collapsed && (
-          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white/50 animate-pulse"></div>
-        )}
-      </Link>
-    );
-  };
+  const isActive = (p) => location.pathname === p;
 
   return (
     <>
-      <button
-        onClick={toggleMobile}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-800 rounded-lg border border-purple-500/20 text-white hover:bg-slate-700 transition-colors"
-      >
+      <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-800 rounded-lg border border-purple-500/20 text-white">
         {mobileOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
+      {mobileOpen && <div className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={() => setMobileOpen(false)}></div>}
 
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={() => setMobileOpen(false)}></div>
-      )}
-
-      <div
-        className={`
-          fixed top-0 left-0 h-full bg-slate-900/95 backdrop-blur-xl border-r border-purple-500/20 
-          transition-all duration-300 z-40 flex flex-col
-          ${collapsed ? 'w-20' : 'w-64'}
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        `}
-      >
-        <div className={`
-          flex items-center gap-3 p-4 border-b border-purple-500/20
-          ${collapsed ? 'justify-center' : 'justify-between'}
-        `}>
-          <Link to="/dashboard" className="flex items-center gap-2 group">
-            <Brain className="text-purple-400 group-hover:text-purple-300 transition-colors" size={28} />
-            {!collapsed && (
-              <div className="flex items-center">
-                <span className="text-white font-bold text-lg">LeadAI</span>
-                <span className="bg-gradient-to-r from-purple-500 to-pink-500 px-1.5 py-0.5 rounded text-[8px] text-white font-bold uppercase tracking-wider ml-1">Pro</span>
-              </div>
-            )}
+      <div className={`fixed top-0 left-0 h-full bg-slate-900/95 backdrop-blur-xl border-r border-purple-500/20 transition-all duration-300 z-40 flex flex-col ${collapsed ? 'w-20' : 'w-64'} ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="flex items-center p-4 border-b border-purple-500/20">
+          <Link to="/dashboard" className="flex items-center gap-2">
+            <Brain className="text-purple-400" size={28} />
+            {!collapsed && <span className="text-white font-bold text-lg">LeadAI</span>}
           </Link>
-          <button
-            onClick={toggleSidebar}
-            className={`p-1.5 rounded-lg hover:bg-slate-800 transition-colors text-gray-400 hover:text-white ${collapsed ? 'hidden' : 'block'}`}
-          >
+          <button onClick={() => setCollapsed(!collapsed)} className="ml-auto p-1.5 rounded-lg hover:bg-slate-800 text-gray-400">
             <ChevronLeft size={18} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4">
-          <div className="mb-6">
-            {!collapsed && <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-3">Main Menu</p>}
-            <div className="space-y-1">{mainNavItems.map((item, index) => renderNavItem(item, index))}</div>
-          </div>
-
-          {!collapsed && (
-            <div className="bg-slate-800/50 rounded-xl p-4 border border-purple-500/20 mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <Zap size={16} className="text-yellow-400" />
-                <span className="text-white text-sm font-medium">Quick Stats</span>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Today's Leads</span>
-                  <span className="text-white font-semibold">24</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Hot Leads</span>
-                  <span className="text-purple-400 font-semibold">12</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Conversion</span>
-                  <span className="text-green-400 font-semibold">42%</span>
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="flex-1 overflow-y-auto px-3 py-4">
+          {!collapsed && <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-3">Menu</p>}
+          {items.map((item) => (
+            <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive(item.path) ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-slate-800'} ${collapsed ? 'justify-center' : 'justify-start'}`}>
+              <item.icon size={20} />
+              {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
+            </Link>
+          ))}
         </div>
 
         <div className="border-t border-purple-500/20 px-3 py-4">
-          <div className="space-y-1">
-            {bottomNavItems.map((item, index) => {
-              const active = isActive(item.path);
-              return (
-                <Link
-                  key={index}
-                  to={item.path}
-                  onClick={() => setMobileOpen(false)}
-                  className={`
-                    flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200
-                    ${active 
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25' 
-                      : 'text-gray-400 hover:text-white hover:bg-slate-800'
-                    }
-                    ${collapsed ? 'justify-center' : 'justify-start'}
-                    relative group
-                  `}
-                >
-                  <item.icon size={18} className="flex-shrink-0" />
-                  {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
-                  {collapsed && (
-                    <div className="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                      {item.label}
-                    </div>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-
+          <Link to="/settings" className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-gray-400 hover:text-white hover:bg-slate-800 ${collapsed ? 'justify-center' : 'justify-start'}`}>
+            <Settings size={18} />
+            {!collapsed && <span className="text-sm font-medium">Settings</span>}
+          </Link>
+          <Link to="/help" className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-gray-400 hover:text-white hover:bg-slate-800 ${collapsed ? 'justify-center' : 'justify-start'}`}>
+            <HelpCircle size={18} />
+            {!collapsed && <span className="text-sm font-medium">Help</span>}
+          </Link>
           {!collapsed && (
-            <div className="mt-4 pt-4 border-t border-slate-700">
-              <div className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-purple-500/25">
-                  JD
-                </div>
-                <div className="flex-1">
-                  <p className="text-white text-sm font-medium">John Doe</p>
-                  <p className="text-gray-400 text-xs">Pro Plan</p>
-                </div>
-                <ChevronDown size={16} className="text-gray-400" />
-              </div>
+            <div className="mt-4 pt-4 border-t border-slate-700 flex items-center gap-3 px-3 py-2">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">JD</div>
+              <div><p className="text-white text-sm font-medium">John Doe</p><p className="text-gray-400 text-xs">Pro Plan</p></div>
+              <ChevronDown size={16} className="text-gray-400 ml-auto" />
             </div>
           )}
         </div>
